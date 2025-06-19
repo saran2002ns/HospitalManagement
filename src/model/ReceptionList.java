@@ -1,7 +1,7 @@
 package model;
 
 public class ReceptionList {
-   static Integer count;
+   static Integer count=0;
     Integer id;
     String name;
     String number;
@@ -40,6 +40,11 @@ public class ReceptionList {
     @Override
     public String toString() {
         return "ReceptionList [id=" + id + ", name=" + name + ", number=" + number + ", password=" + password + "]";
+    }
+    public static ReceptionList fromString(String line) {
+        String[] parts = line.split("\\|");
+        return new ReceptionList(parts[1], parts[2], parts[3]);
+      
     }
     
 }

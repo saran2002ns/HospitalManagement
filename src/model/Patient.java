@@ -1,7 +1,7 @@
 package model;
 
 public class Patient {
-    static Integer count;
+    static Integer count=0;
     Integer id;
     String name;
     String number;
@@ -9,12 +9,14 @@ public class Patient {
     String time;
     byte age;
     boolean isAllocated;
-    public Patient(String name, String number, byte age, String date,String time) {
-        this.id=count++;
+   
+    public Patient(String name, String number, String date, String time, byte age) {
+        id=++count;
         this.name = name;
         this.number = number;
+        this.date = date;
+        this.time = time;
         this.age = age;
-        this.isAllocated = false;
     }
     public static Integer getCount() {
         return count;
@@ -69,5 +71,10 @@ public class Patient {
     public String toString() {
         return "Patient [id=" + id + ", name=" + name + ", number=" + number + ", date=" + date + ", time=" + time
                 + ", age=" + age + ", isAllocated=" + isAllocated + "]";
+    }
+     public static Patient fromString(String line) {
+        String[] parts = line.split("\\|");
+        return new Patient(parts[1], parts[2], parts[3], parts[4], Byte.parseByte(parts[5]));
+        
     }
 }

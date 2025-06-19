@@ -1,7 +1,7 @@
 package model;
 
 public class Admin {
-    static Integer count;
+    static Integer count=0;
     Integer id;
     String name;
     String number;
@@ -48,6 +48,11 @@ public class Admin {
     public String toString() {
         return "Admin [id=" + id + ", name=" + name + ", number=" + number + ", password=" + password + ", avalability="
                 + avalability + "]";
+    }
+    public static Admin fromString(String line) {
+        String[] parts = line.split("\\|");
+        return new Admin(parts[1], parts[2], parts[3], parts[4]);
+       
     }
 
 }

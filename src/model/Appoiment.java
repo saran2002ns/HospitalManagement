@@ -2,7 +2,7 @@ package model;
 
 public class Appoiment {
    
-    static Integer count; 
+    static Integer count=0; 
     Integer id;
     String date;
     String time;
@@ -55,6 +55,10 @@ public class Appoiment {
     public String toString() {
         return "Appoiment [id=" + id + ", date=" + date + ", time=" + time + ", patientId=" + patientId + ", docterId="
                 + docterId + "]";
+    }
+     public static Appoiment fromString(String line) {
+        String[] parts = line.split("\\|");
+        return new Appoiment(parts[1],parts[2],Integer.parseInt (parts[3]),Integer.parseInt( parts[4]));
     }
    
 }

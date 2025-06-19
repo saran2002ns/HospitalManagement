@@ -1,7 +1,7 @@
-import managments.menu.HospitalManagementView;
+import login.LoginView;
 
 public class HospitalManageMant {
     public static void main(String[] args) {
-      new HospitalManagementView().init();
+       new LoginView().init();
     }
 }

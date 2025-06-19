@@ -1,75 +1,132 @@
 package repository;
-
-
-import java.util.HashMap;
-
-import java.util.Map;
-
-import model.Admin;
-import model.Appoiment;
-
-import model.Docter;
-import model.Patient;
-import model.ReceptionList;
+import java.util.*;
+import model.*;
 
 public class Db {
     private static Db dataBase;
-    private Db(){};
-    public static Db getInstance(){
-        if(dataBase==null){
-            dataBase= new Db();
-            return dataBase;
+    private Map<Integer, Admin> admins = new HashMap<>();
+    private Map<Integer, ReceptionList> receptionLists = new HashMap<>();
+    private Map<Integer, Patient> patients = new HashMap<>();
+    private Map<Integer, Doctor> doctors = new HashMap<>();
+    private Map<Integer, Appoiment> appoiments = new HashMap<>();
+
+    private Db() {
+        loadAdmins();
+        loadReceptionLists();
+        loadPatients();
+        loadDoctors();
+        loadAppointments();
+    }
+
+    public static Db getInstance() {
+        if (dataBase == null) {
+            dataBase = new Db();
         }
         return dataBase;
     }
-    Map<Integer,Admin> admins= new HashMap<>(Map.of(1,new Admin("Saran","7094250807","password","afternoon"),
-                                               2, new Admin("gokul","8094250748","gokul123","morning")));
-    Map<Integer,ReceptionList> receptionLists= new HashMap<>(Map.of(1,new ReceptionList("Saran","7094250807","password"),
-                                                    2,new ReceptionList("gokul","8094250748","gokul123")));
-    Map<Integer,Patient> patients = new HashMap<>();   
-    Map<Integer,Docter> docters = new HashMap<>();    
-    Map<Integer,Appoiment>  appoiments = new HashMap<>();       
 
-    public  Map<Integer,Admin> getAdmin(){
-        return new HashMap<>(admins);
-    }   
-   public  Map<Integer,Patient>  getPatient(){
-        return new HashMap<>(patients);
-    }    
-    public void addpatient(Patient patient){
-        patients.put(patient.getId(),patient);
+    
+
+
+    private void loadAdmins() {
+        List<String> lines = FileUtil.readFromFile("admins.txt");
+        for (String line : lines) {
+            Admin admin = Admin.fromString(line);
+            admins.put(admin.getId(), admin);
+        }
     }
-    public Map<Integer,ReceptionList> getReceptionList() {
-      return new HashMap<>(receptionLists);
+
+    private void loadReceptionLists() {
+        List<String> lines = FileUtil.readFromFile("receptions.txt");
+        for (String line : lines) {
+            ReceptionList reception = ReceptionList.fromString(line);
+            receptionLists.put(reception.getId(), reception);
+        }
     }
-    public void addRecptionList(ReceptionList receptionList) {
-       receptionLists.put(receptionList.getId(), receptionList);
+
+    private void loadPatients() {
+        List<String> lines = FileUtil.readFromFile("patients.txt");
+        for (String line : lines) {
+            Patient patient = Patient.fromString(line);
+            patients.put(patient.getId(), patient);
+        }
     }
-    public void removeRecptionList(int id) {
-       if(receptionLists.containsKey(id)){
-         receptionLists.remove(id);
-       }
+
+    private void loadDoctors() {
+        List<String> lines = FileUtil.readFromFile("doctors.txt");
+        for (String line : lines) {
+            Doctor doctor = Doctor.fromString(line);
+            doctors.put(doctor.getId(), doctor);
+        }
     }
-    public void addDocter(Docter docter) {
-       docters.put(docter.getId(), docter);
+
+    private void loadAppointments() {
+        List<String> lines = FileUtil.readFromFile("appointments.txt");
+        for (String line : lines) {
+            Appoiment app = Appoiment.fromString(line);
+            appoiments.put(app.getId(), app);
+        }
     }
+
+
+    public Map<Integer, Admin> getAdmin() {
+        return admins;
+    }
+
+    public Map<Integer, ReceptionList> getReceptionLists() {
+        return receptionLists;
+    }
+
     public Map<Integer, Patient> getPatients() {
-       return patients;
+        return patients;
     }
-    public Map<Integer, Docter> getDocters() {
-       return docters;
+
+    public Map<Integer, Doctor> getDocters() {
+        return doctors;
     }
+
+    public Map<Integer, Appoiment> getAppoinments() {
+        return appoiments;
+    }
+
+    public void addAdmin(Admin admin) {
+        admins.put(admin.getId(), admin);
+        FileUtil.saveToFile("admins.txt", admins.values());
+    }
+
+    public void addpatient(Patient patient) {
+        patients.put(patient.getId(), patient);
+        FileUtil.saveToFile("patients.txt", patients.values());
+    }
+
+    public void addRecptionList(ReceptionList receptionList) {
+        receptionLists.put(receptionList.getId(), receptionList);
+        FileUtil.saveToFile("receptions.txt", receptionLists.values());
+    }
+
+    public void removeRecptionList(int id) {
+        if (receptionLists.containsKey(id)) {
+            receptionLists.remove(id);
+            FileUtil.saveToFile("receptions.txt", receptionLists.values());
+        }
+    }
+
+    public void addDocter(Doctor doctor) {
+        doctors.put(doctor.getId(), doctor);
+        FileUtil.saveToFile("doctors.txt", doctors.values());
+    }
+
     public void addAppoinment(Appoiment appoiment) {
         appoiments.put(appoiment.getId(), appoiment);
+        FileUtil.saveToFile("appointments.txt", appoiments.values());
     }
-    public Patient getPatient(int patienId) {
-       return patients.get(patienId);
+
+    public Patient getPatient(int patientId) {
+        return patients.get(patientId);
     }
-    public Docter getDocter(int docterId) {
-        return docters.get(docterId);
+
+    public Doctor getDocter(int doctorId) {
+        return doctors.get(doctorId);
     }
    
-    public Map<Integer, Appoiment> getAppoinments() {
-       return appoiments;
-    }                                
 }
